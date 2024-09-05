@@ -27,6 +27,7 @@ export default function Navbar({
   return (
     <nav className="fixed inset-x-0 top-0 flex h-[80px] w-full items-center justify-between border-b-2 border-gray-300 px-8">
       <h1 className="text-xl font-extrabold uppercase">Librito facil 📚</h1>
+      <h2>A Ivan le gusta PHP</h2>
       <ul className="flex items-center gap-4 font-bold uppercase text-neutral-900">
         {routes.map((route) => (
           <li key={route.path}>
