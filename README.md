@@ -84,4 +84,4 @@ Para probar las funcionalidades de login y registro con Supabase, sigue estos pa
 
    **Nota:** Asegúrate de que la URL de redirección (`redirectTo`) sea la correcta para tu aplicación.
 
----
+--
