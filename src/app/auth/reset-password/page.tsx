@@ -1,13 +1,14 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
+import LoaderButton from '@/components/LoaderButton'
 import { Input } from '@/components/ui/input'
 import { createClient } from '@/utils/supabase/client'
 import { ErrorMessage, Form, Formik } from 'formik'
-import { LoaderCircle } from 'lucide-react'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import * as yup from 'yup'
+import EmailSent from './components/EmailSent'
 
 const validationSchema = yup.object({
   email: yup
@@ -19,16 +20,27 @@ const validationSchema = yup.object({
 export default function ResetPasswordPage() {
   const [isLoading, setIsLoading] = useState(false)
   const supabase = createClient()
+  const router = useRouter()
+
   async function resetPassword(values: { email: string }) {
+    setIsLoading(true)
     let { data, error } = await supabase.auth.resetPasswordForEmail(
       values.email,
+      {
+        redirectTo: 'http://localhost:3000/auth/update-password',
+      },
     )
 
-    if(error) console.log(error)
+    if (error)
+      router.push(
+        `/reset-password?message=${encodeURIComponent(error.message)}`,
+      )
+      else router.replace(`/auth/reset-password?email-sent=true`)
 
-    console.log(data)
+    setIsLoading(false)
   }
   return (
+    <>
     <section className="flex h-[100vh] w-full items-center justify-center">
       <Formik
         initialValues={{ email: '' }}
@@ -62,19 +74,10 @@ export default function ResetPasswordPage() {
             {/* Botón de Enviar */}
             <div className="flex items-center justify-between">
               <Link href="/auth/reset-password">Ir a Iniciar Sesión</Link>
-              <Button
-                disabled={isSubmitting || isLoading}
-                className="inline-flex items-center gap-2"
-              >
-                {isLoading ? (
-                  <>
-                    <LoaderCircle className="w-5 animate-spin" />
-                    Cargando
-                  </>
-                ) : (
-                  'Enviar'
-                )}
-              </Button>
+
+              <LoaderButton condition={isSubmitting || isLoading}>
+                Enviar
+              </LoaderButton>
             </div>
 
             <Link href="/auth/signup">¿No tienes cuenta?</Link>
@@ -82,5 +85,8 @@ export default function ResetPasswordPage() {
         )}
       </Formik>
     </section>
+
+    <EmailSent/>
+    </>
   )
 }
