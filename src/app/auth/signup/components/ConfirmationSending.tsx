@@ -8,7 +8,7 @@ export default function ConfirmationSending() {
 
   if (confirmationSent) {
     return (
-      <section className="fixed inset-0 z-10 flex h-[100vh] w-full items-center justify-center">
+      <section className="fixed inset-0 z-10 flex h-[100vh] w-full items-center justify-center bg-white">
         <div>
           <p>Te hemos enviado un email para confirmar tu usuario</p>
         </div>
