@@ -1,7 +1,12 @@
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
-import { logout } from './actions'
 import Navbar from '@/components/Navbar'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Libro Baratito! 📚 - Inicio',
+  description: 'Your Description',
+}
 
 export default async function Home() {
   const supabase = createClient()
@@ -13,7 +18,7 @@ export default async function Home() {
 
   return (
     <main>
-      <Navbar user={data.user} logout={logout} />
+      <Navbar user={data.user} />
     </main>
   )
 }

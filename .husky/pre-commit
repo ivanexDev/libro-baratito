@@ -1,5 +1,0 @@
-npx prettier --write .
-git add .
-
-# Run linting and tests
-npm run lint

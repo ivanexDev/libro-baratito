@@ -1,20 +1,24 @@
 'use client'
 
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import {
+  Alert as AlertCdn,
+  AlertDescription,
+  AlertTitle,
+} from '@/components/ui/alert'
 import { CircleAlert } from 'lucide-react'
 import { useSearchParams } from 'next/navigation'
 
-export default function SignUpFeedback() {
+export default function Alert() {
   const searchParams = useSearchParams()
   const message = searchParams.get('message')
 
   if (message) {
     return (
-      <Alert className="fixed right-0 top-0 m-5 h-auto w-auto">
+      <AlertCdn className="fixed right-0 top-0 m-5 h-auto w-auto">
         <CircleAlert className="h-4 w-4" />
         <AlertTitle>Ha ocurrido un error</AlertTitle>
         <AlertDescription>{message}</AlertDescription>
-      </Alert>
+      </AlertCdn>
     )
   }
   return null
