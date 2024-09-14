@@ -21,7 +21,7 @@ export async function signUp(formData: FormData) {
   })
 
   if (error) {
-    redirect(`/auth/login?message=${encodeURIComponent(error.message)}`)
+    redirect(`/auth/signup?message=${encodeURIComponent(error.message)}`)
   } else {
     redirect('/auth/signup?confirmation=true')
   }
