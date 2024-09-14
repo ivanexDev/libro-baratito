@@ -3,9 +3,9 @@
 import { createClient } from '@/utils/supabase/client'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import LoaderButton from './LoaderButton'
+import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarTrigger } from './ui/menubar'
 
-export default function Logout() {
+export default function Logout({ email }: { email: string | undefined }) {
   const [isLoading, setIsLoading] = useState(false)
   const supabase = createClient()
   const router = useRouter()
@@ -21,8 +21,15 @@ export default function Logout() {
     setIsLoading(false)
   }
   return (
-    <LoaderButton onClick={logout} condition={isLoading}>
-      Salir
-    </LoaderButton>
+    <Menubar>
+      <MenubarMenu>
+        <MenubarTrigger>Mi Cuenta</MenubarTrigger>
+        <MenubarContent>
+          <MenubarItem disabled>{email}</MenubarItem>
+          <MenubarItem onClick={logout}>Cerrar Sesión</MenubarItem>
+        </MenubarContent>
+      </MenubarMenu>
+    </Menubar>
   )
 }
+

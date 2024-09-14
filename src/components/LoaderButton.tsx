@@ -1,19 +1,14 @@
+'use client'
 import { LoaderCircle } from 'lucide-react'
-import { Button } from './ui/button'
-import { ReactNode } from 'react'
+import { Button, ButtonProps } from './ui/button'
+import { useFormStatus } from 'react-dom'
 
-export default function LoaderButton({
-  onClick,
-  condition,
-  children,
-}: {
-  onClick?: () => void
-  condition: boolean
-  children: ReactNode
-}) {
+export default function LoaderButton({ children }: ButtonProps) {
+  const { pending } = useFormStatus()
+
   return (
-    <Button onClick={onClick} disabled={condition}>
-      {condition ? (
+    <Button disabled={pending} size={'lg'}>
+      {pending ? (
         <>
           <LoaderCircle className="w-5 animate-spin" />
           Cargando

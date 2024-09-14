@@ -14,7 +14,7 @@ export default function Alert() {
 
   if (message) {
     return (
-      <AlertCdn className="fixed right-0 top-0 m-5 h-auto w-auto">
+      <AlertCdn className="fixed right-0 top-[85px] m-5 h-auto w-auto">
         <CircleAlert className="h-4 w-4" />
         <AlertTitle>Ha ocurrido un error</AlertTitle>
         <AlertDescription>{message}</AlertDescription>
