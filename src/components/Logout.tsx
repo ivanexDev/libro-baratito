@@ -1,28 +1,29 @@
 'use client'
 
-import { createClient } from '@/utils/supabase/client'
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
-import LoaderButton from './LoaderButton'
+import {
+  Menubar,
+  MenubarContent,
+  MenubarItem,
+  MenubarMenu,
+  MenubarTrigger,
+} from './ui/menubar'
+import { logout } from './actions'
 
-export default function Logout() {
-  const [isLoading, setIsLoading] = useState(false)
-  const supabase = createClient()
-  const router = useRouter()
+export default function Logout({ email }: { email: string | undefined }) {
 
-  async function logout() {
-    setIsLoading(true)
-    const { error } = await supabase.auth.signOut()
-
-    if (error)
-      router.push('/?message=No se puedo cerrar la sesion, intente nuevamente')
-    else router.replace('/auth/login')
-
-    setIsLoading(false)
+  async function handleClick(){
+    await logout()
   }
+ 
   return (
-    <LoaderButton onClick={logout} condition={isLoading}>
-      Salir
-    </LoaderButton>
+    <Menubar>
+      <MenubarMenu>
+        <MenubarTrigger>Mi Cuenta</MenubarTrigger>
+        <MenubarContent>
+          <MenubarItem disabled>{email}</MenubarItem>
+          <MenubarItem onClick={handleClick}>Cerrar Sesión</MenubarItem>
+        </MenubarContent>
+      </MenubarMenu>
+    </Menubar>
   )
 }

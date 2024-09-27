@@ -11,12 +11,8 @@ export const metadata: Metadata = {
 export default function SignUpPage() {
   return (
     <>
-      <section className="flex h-[100vh] w-full items-center justify-center">
-        <SignUpForm />
-      </section>
-
+      <SignUpForm />
       <ConfirmationSending />
-      <Alert />
     </>
   )
 }

@@ -1,126 +1,63 @@
-'use client'
-
-import LoaderButton from '@/components/LoaderButton'
 import { Input } from '@/components/ui/input'
-import { createClient } from '@/utils/supabase/client'
-import { ErrorMessage, Form, Formik } from 'formik'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
-import * as yup from 'yup'
+import { signUp } from './actions'
+import LoaderButton from '@/components/LoaderButton'
 
-const validationSchema = yup.object({
-  email: yup
-    .string()
-    .email('El email no es válido')
-    .required('El email es obligatorio'),
-  password: yup
-    .string()
-    .min(6, 'La contraseña debe tener al menos 6 caracteres')
-    .required('La contraseña es obligatoria'),
-  confirmPassword: yup
-    .string()
-    .oneOf([yup.ref('password')], 'Las contraseñas deben coincidir')
-    .required('La confirmación de contraseña es obligatoria'),
-})
-
-export default function SignUpForm() {
-  const [isLoading, setIsLoading] = useState(false)
-  const router = useRouter()
-
-  async function signup(values: { email: string; password: string }) {
-    const supabase = createClient()
-
-    const { error } = await supabase.auth.signUp({
-      email: values.email,
-      password: values.password,
-    })
-
-    if (error) {
-      router.replace(`/auth/login?message=${encodeURIComponent(error.message)}`)
-    } else {
-      router.replace('/auth/signup?confirmation=true')
-    }
-
-    setIsLoading(false)
-  }
+export default async function SignUpForm() {
   return (
-    <Formik
-      initialValues={{ email: '', password: '', confirmPassword: '' }}
-      validationSchema={validationSchema}
-      onSubmit={(values, { setSubmitting }) => {
-        setSubmitting(true)
-        signup(values).finally(() => setSubmitting(false))
-      }}
+    <form
+      action={signUp}
+      className="flex h-full w-full flex-col items-center justify-center gap-4 bg-white"
     >
-      {({ isSubmitting, values, handleChange }) => (
-        <Form className="flex min-w-[500px] flex-col gap-2 rounded-xl border-2 border-gray-300 bg-white p-8">
-          <h4 className="text-2xl font-bold">Crea tu cuenta</h4>
-          {/* Campo de Email */}
-          <div>
-            <label htmlFor="email">Email:</label>
-            <Input
-              id="email"
-              name="email"
-              type="email"
-              placeholder="Introduce tu email"
-              required
-              value={values.email}
-              onChange={handleChange}
-            />
-            <ErrorMessage
-              name="email"
-              component="div"
-              className="text-sm text-red-500"
-            />
-          </div>
-          {/* Campo de Contraseña */}
-          <div>
-            <label htmlFor="password">Contraseña:</label>
-            <Input
-              id="password"
-              name="password"
-              type="password"
-              placeholder="Introduce tu contraseña"
-              required
-              value={values.password}
-              onChange={handleChange}
-            />
-            <ErrorMessage
-              name="password"
-              component="div"
-              className="text-sm text-red-500"
-            />
-          </div>
-          {/* Campo confirmación de Contraseña */}
-          <div>
-            <label htmlFor="password">Confirmar Contraseña:</label>
-            <Input
-              id="confirmPassword"
-              name="confirmPassword"
-              type="password"
-              placeholder="Confirma tu contraseña"
-              required
-              value={values.confirmPassword}
-              onChange={handleChange}
-            />
-            <ErrorMessage
-              name="confirmPassword"
-              component="div"
-              className="text-sm text-red-500"
-            />
-          </div>
+      <h4 className="text-3xl font-bold">Crea tu cuenta</h4>
 
-          <div className="flex items-center justify-between">
-            <Link href="/auth/-reset-password">¿Olvidaste tu contraseña?</Link>
+      {/* Campo de Email */}
+      <div className="w-full">
+        <label htmlFor="email">Email:</label>
+        <Input
+          id="email"
+          name="email"
+          type="email"
+          placeholder="Introduce tu email"
+          required
+        />
+      </div>
 
-            <LoaderButton condition={isSubmitting || isLoading}>
-              Entrar
-            </LoaderButton>
-          </div>
-          <Link href="/auth/login"> ir a iniciar sesión</Link>
-        </Form>
-      )}
-    </Formik>
+      {/* Campo de Contraseña */}
+      <div className="w-full">
+        <label htmlFor="password">Contraseña:</label>
+        <Input
+          id="password"
+          name="password"
+          type="password"
+          placeholder="Introduce tu contraseña"
+          required
+          minLength={6}
+        />
+      </div>
+
+      {/* Campo confirmación de Contraseña */}
+      <div className="w-full">
+        <label htmlFor="confirmPassword">Confirmar Contraseña:</label>
+        <Input
+          id="confirmPassword"
+          name="confirmPassword"
+          type="password"
+          placeholder="Confirma tu contraseña"
+          required
+        />
+      </div>
+
+      <div className="flex w-full items-center justify-between">
+        <Link className="w-full hover:underline" href="/auth/reset-password">
+          ¿Olvidaste tu contraseña?
+        </Link>
+
+        <LoaderButton className='bg-blue-500'>Registrarse</LoaderButton>
+      </div>
+      <Link className="w-full hover:underline" href="/auth/login">
+        Ir a iniciar sesión
+      </Link>
+    </form>
   )
 }
